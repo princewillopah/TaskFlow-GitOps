@@ -1,0 +1,20 @@
+monitor:
+  namespace: observability
+
+target:
+  namespace: taskflow-ns
+  app_name:
+    backend: backend
+    frontend: frontend
+
+
+#   backendServiceName: backend
+#   backendPort: 3000
+
+
+
+
+# observability:
+#   enabled: true
+#   monitor_namespace: observability
+#   app_namespace: taskflow-ns

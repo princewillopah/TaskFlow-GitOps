@@ -1,0 +1,28 @@
+taskflow_backend:
+  replicaCount: 2
+  image:
+    repository: princewillopah2/taskflow-app_backend
+    tag: 1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 3000
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true

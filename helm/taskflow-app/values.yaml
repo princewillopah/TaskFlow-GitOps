@@ -1,0 +1,73 @@
+global:
+  # secrets values
+  taskflow_secrets:
+    env:
+      MONGO_URI: "mongodb+srv://shopsphere_db_user:12345678900African@shopsphere-prod.ktkkmbc.mongodb.net/github-action-eks"
+
+  # network policy values
+  taskflow_network_policies:
+    backend:
+      port: 3000
+
+    node_exporter:
+      port: 9113
+
+# backend values here
+taskflow_backend:
+  replicaCount: 2
+  image:
+    repository: princewillopah2/taskflow-app_backend
+    tag: 1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 3000
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+
+
+
+
+
+# frontend values here
+taskflow_frontend:
+  replicaCount: 1
+  image:
+    repository: princewillopah2/taskflow-app_frontend
+    tag: 1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 80
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+

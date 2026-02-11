@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: backend
+    tier: backend
+    env: production
+spec:
+  replicas: {{ .Values.taskflow_backend.replicas }}
+  revisionHistoryLimit: {{ .Values.taskflow_backend.revisionHistoryLimit }}
+  strategy:
+    type: {{ .Values.taskflow_backend.strategy.type }}
+    rollingUpdate:
+      maxSurge: {{ .Values.taskflow_backend.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.taskflow_backend.strategy.rollingUpdate.maxUnavailable }}
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: backend
+        env: production
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.taskflow_backend.port }}"
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.taskflow_backend.securityContext.runAsUser }}
+        runAsGroup: {{ .Values.taskflow_backend.securityContext.runAsGroup }}
+        fsGroup: {{ .Values.taskflow_backend.securityContext.fsGroup }}
+      containers:
+        - name: backend
+          image: "{{ .Values.taskflow_backend.image.repository }}:{{ .Values.taskflow_backend.image.tag }}"
+          imagePullPolicy: {{ .Values.taskflow_backend.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.taskflow_backend.port }}
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_URI
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: node-env
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: port
+          resources:
+            requests:
+              memory: {{ .Values.taskflow_backend.resources.requests.memory }}
+              cpu: {{ .Values.taskflow_backend.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.taskflow_backend.resources.limits.memory }}
+              cpu: {{ .Values.taskflow_backend.resources.limits.cpu }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.taskflow_backend.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.taskflow_backend.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          securityContext:
+            allowPrivilegeEscalation: {{ .Values.taskflow_backend.securityContext.allowPrivilegeEscalation }}
+            readOnlyRootFilesystem: {{ .Values.taskflow_backend.securityContext.readOnlyRootFilesystem }}

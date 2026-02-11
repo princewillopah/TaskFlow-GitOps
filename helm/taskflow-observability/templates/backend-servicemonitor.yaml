@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-backend  # backend
+  namespace: {{ .Values.monitor.namespace }} # target.
+  # labels:
+  #   Release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.target.app_name.backend }}
+
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.target.namespace }} # taskflow_ns
+      
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+

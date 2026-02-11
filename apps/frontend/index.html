@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tasks"></i>
+                    <div>
+                        <h1>TaskFlow<span> Pro</span></h1>
+                        <p style="font-size: 0.875rem; opacity: 0.8;">Task management</p>
+                    </div>
+                </div>
+                <div class="stats-grid" style="background: transparent; box-shadow: none; border: none; grid-template-columns: repeat(3, auto); gap: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700;" id="totalTasks">0</div>
+                        <div style="font-size: 0.875rem; opacity: 0.8;">Total Tasks</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700;" id="activeTasks">0</div>
+                        <div style="font-size: 0.875rem; opacity: 0.8;">Active</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700;" id="categoriesCount">0</div>
+                        <div style="font-size: 0.875rem; opacity: 0.8;">Categories</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- Sidebar - Task Form -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-edit"></i>
+                        <span id="formTitle">Create New Task</span>
+                    </h3>
+                    <form id="taskForm">
+                        <div class="form-group">
+                            <label for="taskTitle" class="form-label">Task Title *</label>
+                            <input type="text" id="taskTitle" class="form-input" placeholder="Enter task title" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taskDescription" class="form-label">Description</label>
+                            <textarea id="taskDescription" class="form-textarea" placeholder="Describe your task..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Priority</label>
+                            <div class="priority-selector">
+                                <div class="priority-option priority-low" data-priority="low">Low</div>
+                                <div class="priority-option priority-medium selected" data-priority="medium">Medium</div>
+                                <div class="priority-option priority-high" data-priority="high">High</div>
+                            </div>
+                            <input type="hidden" id="taskPriority" value="medium">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taskCategory" class="form-label">Category</label>
+                            <select id="taskCategory" class="form-select">
+                                <option value="work">💼 Work</option>
+                                <option value="personal">👤 Personal</option>
+                                <option value="shopping">🛒 Shopping</option>
+                                <option value="health">🏥 Health</option>
+                                <option value="learning">📚 Learning</option>
+                                <option value="finance">💰 Finance</option>
+                                <option value="home">🏠 Home</option>
+                                <option value="other">🔮 Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Color Label</label>
+                            <div class="color-picker">
+                                <div class="color-option selected" style="background-color: #6366f1;" data-color="#6366f1"></div>
+                                <div class="color-option" style="background-color: #10b981;" data-color="#10b981"></div>
+                                <div class="color-option" style="background-color: #f59e0b;" data-color="#f59e0b"></div>
+                                <div class="color-option" style="background-color: #ef4444;" data-color="#ef4444"></div>
+                                <div class="color-option" style="background-color: #8b5cf6;" data-color="#8b5cf6"></div>
+                                <div class="color-option" style="background-color: #3b82f6;" data-color="#3b82f6"></div>
+                                <div class="color-option" style="background-color: #ec4899;" data-color="#ec4899"></div>
+                                <div class="color-option" style="background-color: #14b8a6;" data-color="#14b8a6"></div>
+                                <div class="color-option" style="background-color: #f97316;" data-color="#f97316"></div>
+                                <div class="color-option" style="background-color: #64748b;" data-color="#64748b"></div>
+                            </div>
+                            <input type="hidden" id="taskColor" value="#6366f1">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                            <i class="fas fa-plus"></i> Create Task
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-full" id="cancelBtn" style="display: none; margin-top: 0.5rem;">
+                            <i class="fas fa-times"></i> Cancel Edit
+                        </button>
+                    </form>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Quick Stats</span>
+                    </h3>
+                    <div id="statsContainer">
+                        <!-- Stats will be loaded here -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div class="content-header">
+                    <h2 class="content-title">
+                        <i class="fas fa-list-check"></i>
+                        My Tasks
+                    </h2>
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search tasks...">
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="all">All Tasks</button>
+                    <button class="category-btn" data-category="work">💼 Work</button>
+                    <button class="category-btn" data-category="personal">👤 Personal</button>
+                    <button class="category-btn" data-category="shopping">🛒 Shopping</button>
+                    <button class="category-btn" data-category="health">🏥 Health</button>
+                    <button class="category-btn" data-category="learning">📚 Learning</button>
+                </div>
+
+                <!-- Task Grid -->
+                <div class="task-grid" id="tasksContainer">
+                    <!-- Tasks will be loaded here -->
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h3 class="empty-title">No tasks yet</h3>
+                        <p class="empty-description">Create your first task using the form on the left to get started!</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer"></div>
+    <script src="assets/script.js"></script>
+
+ 
+</body>
+</html>

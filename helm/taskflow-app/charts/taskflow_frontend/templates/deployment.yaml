@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: frontend
+    tier: frontend
+    env: production
+spec:
+  replicas: {{ .Values.taskflow_frontend.replicas }}
+  revisionHistoryLimit: {{ .Values.taskflow_frontend.revisionHistoryLimit }}
+  strategy:
+    type: {{ .Values.taskflow_frontend.strategy.type }}
+    rollingUpdate:
+      maxSurge: {{ .Values.taskflow_frontend.strategy.rollingUpdate.maxSurge }}
+      maxUnavailable: {{ .Values.taskflow_frontend.strategy.rollingUpdate.maxUnavailable }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+        env: production
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.taskflow_frontend.port }}"
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.taskflow_frontend.image.repository }}:{{ .Values.taskflow_frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.taskflow_frontend.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.taskflow_frontend.port }}
+          resources:
+            requests:
+              memory: {{ .Values.taskflow_frontend.resources.requests.memory }}
+              cpu: {{ .Values.taskflow_frontend.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.taskflow_frontend.resources.limits.memory }}
+              cpu: {{ .Values.taskflow_frontend.resources.limits.cpu }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.taskflow_frontend.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.taskflow_frontend.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
+
+        - name: nginx-exporter
+          image: nginx/nginx-prometheus-exporter:1.1.0
+          args:
+            - -nginx.scrape-uri=http://127.0.0.1:8080/stub_status
+          ports:
+            - containerPort: 9113
+              name: metrics
+
+
+
+
+

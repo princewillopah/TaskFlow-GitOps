@@ -1,0 +1,15 @@
+dependencies:
+- name: taskflow_backend
+  repository: file://charts/taskflow_backend
+  version: 0.1.0
+- name: taskflow_frontend
+  repository: file://charts/taskflow_frontend
+  version: 0.1.0
+- name: taskflow_network_policies
+  repository: file://charts/taskflow_network_policies
+  version: 0.1.0
+- name: taskflow_secrets
+  repository: file://charts/taskflow_secrets
+  version: 0.1.0
+digest: sha256:a14c216e1aaf99278a0cfddd6d5256edeb601291b43bf197a0b41970075fd46f
+generated: "2026-02-11T09:14:01.413405274+01:00"

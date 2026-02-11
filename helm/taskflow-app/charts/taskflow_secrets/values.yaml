@@ -1,0 +1,4 @@
+
+taskflow_secrets:
+  env:
+    MONGO_URI: "mongodb+srv://shopsphere_db_user:12345678900African@shopsphere-prod.ktkkmbc.mongodb.net/github-action-eks"

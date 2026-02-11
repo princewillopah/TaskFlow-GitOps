@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: taskflow-app
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/YOURORG/YOURREPO.git
+    targetRevision: main
+    path: helm/taskflow-app
+    helm: {}
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: taskflow-ns
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

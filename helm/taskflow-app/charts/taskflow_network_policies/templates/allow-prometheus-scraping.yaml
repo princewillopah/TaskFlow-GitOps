@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-scraping
+  namespace:  {{ .Release.Namespace }}
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: observability
+    ports:
+    - protocol: TCP
+      port: {{ .Values.global.taskflow_network_policies.backend.port }}   # backend
+    - protocol: TCP
+      port: {{ .Values.global.taskflow_network_policies.node_exporter.port }}   # nginx exporter
+
+
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: allow-prometheus-scraping
+#   namespace: shopsphere
+# spec:
+#   podSelector: {}
+#   ingress:
+#   - from:
+#     - namespaceSelector:
+#         matchLabels:
+#           kubernetes.io/metadata.name: observability

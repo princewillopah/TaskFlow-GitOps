@@ -1,0 +1,24 @@
+apiVersion: v2
+name: taskflow-stack
+description: Taskflow umbrella chart
+type: application
+version: 1.0.0
+
+
+dependencies:
+  - name: taskflow_backend
+    version: 0.1.0
+    repository: file://charts/taskflow_backend
+
+  - name: taskflow_frontend
+    version: 0.1.0
+    repository: file://charts/taskflow_frontend
+  - name: taskflow_network_policies
+    version: 0.1.0
+    repository: file://charts/taskflow_network_policies
+
+  - name: taskflow_secrets
+    version: 0.1.0
+    repository: file://charts/taskflow_secrets
+
+

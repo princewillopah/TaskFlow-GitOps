@@ -1,0 +1,4 @@
+apiVersion: v2
+name: taskflow_secrets
+description: Secrets for TaskFlow
+version: 0.1.0
