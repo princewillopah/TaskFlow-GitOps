@@ -1,0 +1,72 @@
+# global:
+taskflow_secrets:
+  # secrets values
+  secrets:
+    backend:
+      mongoUri: AgA7NwcLHvLryhBu/aJH+osSV1nZKld+q8gLzF0uvj0gFhbiyrTK59dKburceng8FPNIojp7K9FjEoD5BBJ8lPpfz5L42YtXSHUY86jLzgrHifkzLvv4Mj1Mt2KRz0HdHlodhXzHrva9EGt+1YjIcBzVFGatwE1W/kkALaONsUlGzdakHUWjtD2U3+R1w6EEQx9BTdCjb48SZoPiTw4n/d4AdjS2kvcKKHDXBBWFbMelevR3ww6C+ciYafCYodgMaB/YnA+/kqabfYLes99NSYW6z8x0IDJJ6sTT4xnORkkEmtTb75UF7XA3RugZ9702YKYBTu+zYV7z7hHf9Pk9iwmLAUbw1aK8SEUcTJDiuCwZIYBjsDU+JKGoA+IrsJZWm+63pvLPr2ONOCaxPx2qLOn04TL+i6IChpPLe4dwSXYJaP94PsHJWPJtQ0I86/V6mOANrSahLS9oP1eHjIIWPxPWvTQjZnG6jRx84TMc73O5X1P/BQ8WwyllKKvMvTb6bFFO3Z3dhvyrHCo5bgKMQZeUeMe1iyjocu270pUnYqvfL7IkDwvwQj8TDP7FdAb8i5aNGt5US/t+K8WmrRgkTaBwU2ta3J+8JlyWy1n6fHe4IUjx7hqaf/bBYnniwlASbJGSS4so03oi0oOxwiqKks8LKNDS4+4hx5Z74XTgeFJO8Cwi4MnPSWWTYfouVtVe/Q+GnmGPNC9BMEXKRU9n1piOvhtWvzE4nbWIvb1hJiw4yghfe9Wdjl5KGncpAwYP5t2thmeePEEIZ7xtdhbAr5ZuNR79rD9TYudcT4bE3yHOpYO6HjOMkiYrBO15GaGm3f00WIVpa0e3EwQ=
+
+  # network policy values
+  taskflow_network_policies:
+    backend:
+      port: 3000
+
+    node_exporter:
+      port: 9113
+
+# backend values here
+taskflow_backend:
+  image:
+    repository: princewillopah2/taskflow-app_backend
+    tag: prod_1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 3
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 3000
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+
+
+
+
+
+# frontend values here
+taskflow_frontend:
+  image:
+    repository: princewillopah2/taskflow-app_frontend
+    tag: prod_1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 3
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 80
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+

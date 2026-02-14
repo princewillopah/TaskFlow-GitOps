@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Professional Task Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>TaskFlow</h1>
+                    <span>Pro Management</span>
+                </div>
+            </div>
+            
+            <div class="nav-stats">
+                <div class="stat-pill">
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="totalTasks">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-icon not-started">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="notStartedTasks">0</span>
+                        <span class="stat-label">Not Started</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-icon active">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="inProgressTasks">0</span>
+                        <span class="stat-label">In Progress</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="completedTasks">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-pill">
+                    <div class="stat-icon categories">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="categoriesCount">0</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Left Panel - Task Creation -->
+        <aside class="control-panel">
+            <div class="panel-header">
+                <div class="panel-icon">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <h2 id="formTitle">Create New Task</h2>
+            </div>
+
+            <form id="taskForm" class="task-form">
+                <div class="input-group">
+                    <label for="taskTitle">
+                        <i class="fas fa-heading"></i>
+                        Task Title
+                    </label>
+                    <input 
+                        type="text" 
+                        id="taskTitle" 
+                        placeholder="What needs to be done?" 
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="taskDescription">
+                        <i class="fas fa-align-left"></i>
+                        Description
+                    </label>
+                    <textarea 
+                        id="taskDescription" 
+                        placeholder="Add details about this task..."
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <i class="fas fa-tasks"></i>
+                        Status
+                    </label>
+                    <div class="status-grid">
+                        <button type="button" class="status-btn not-started selected" data-status="not-started">
+                            <i class="fas fa-circle"></i>
+                            <span>Not Started</span>
+                        </button>
+                        <button type="button" class="status-btn in-progress" data-status="in-progress">
+                            <i class="fas fa-spinner"></i>
+                            <span>In Progress</span>
+                        </button>
+                        <button type="button" class="status-btn completed" data-status="completed">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Completed</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="taskStatus" value="not-started">
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <i class="fas fa-signal"></i>
+                        Priority Level
+                    </label>
+                    <div class="priority-grid">
+                        <button type="button" class="priority-btn low" data-priority="low">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Low</span>
+                        </button>
+                        <button type="button" class="priority-btn medium selected" data-priority="medium">
+                            <i class="fas fa-minus"></i>
+                            <span>Medium</span>
+                        </button>
+                        <button type="button" class="priority-btn high" data-priority="high">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>High</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="taskPriority" value="medium">
+                </div>
+
+                <div class="input-group">
+                    <label for="taskCategory">
+                        <i class="fas fa-tag"></i>
+                        Category
+                    </label>
+                    <select id="taskCategory">
+                        <option value="work">💼 Work</option>
+                        <option value="personal">👤 Personal</option>
+                        <option value="shopping">🛒 Shopping</option>
+                        <option value="health">🏥 Health</option>
+                        <option value="learning">📚 Learning</option>
+                        <option value="finance">💰 Finance</option>
+                        <option value="home">🏠 Home</option>
+                        <option value="other">🔮 Other</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        <i class="fas fa-palette"></i>
+                        Color Tag
+                    </label>
+                    <div class="color-grid">
+                        <div class="color-swatch selected" data-color="#6366f1" style="background: #6366f1;"></div>
+                        <div class="color-swatch" data-color="#10b981" style="background: #10b981;"></div>
+                        <div class="color-swatch" data-color="#f59e0b" style="background: #f59e0b;"></div>
+                        <div class="color-swatch" data-color="#ef4444" style="background: #ef4444;"></div>
+                        <div class="color-swatch" data-color="#8b5cf6" style="background: #8b5cf6;"></div>
+                        <div class="color-swatch" data-color="#3b82f6" style="background: #3b82f6;"></div>
+                        <div class="color-swatch" data-color="#ec4899" style="background: #ec4899;"></div>
+                        <div class="color-swatch" data-color="#14b8a6" style="background: #14b8a6;"></div>
+                        <div class="color-swatch" data-color="#f97316" style="background: #f97316;"></div>
+                        <div class="color-swatch" data-color="#64748b" style="background: #64748b;"></div>
+                    </div>
+                    <input type="hidden" id="taskColor" value="#6366f1">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>Create Task</span>
+                    </button>
+                    <button type="button" class="btn-cancel" id="cancelBtn" style="display: none;">
+                        <i class="fas fa-times"></i>
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="stats-section">
+                <div class="stats-header">
+                    <i class="fas fa-chart-pie"></i>
+                    <h3>Status Overview</h3>
+                </div>
+                <div id="statusStatsContainer" class="stats-list">
+                    <!-- Status stats will be loaded here -->
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stats-header">
+                    <i class="fas fa-folder"></i>
+                    <h3>Category Overview</h3>
+                </div>
+                <div id="statsContainer" class="stats-list">
+                    <!-- Category stats will be loaded here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Panel - Tasks Display -->
+        <main class="tasks-panel">
+            <div class="tasks-header">
+                <h2>
+                    <i class="fas fa-tasks"></i>
+                    Task Dashboard
+                </h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search tasks..."
+                        autocomplete="off"
+                    >
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-chip active" data-category="all">
+                    <i class="fas fa-border-all"></i>
+                    All Tasks
+                </button>
+                <button class="filter-chip" data-category="work">
+                    💼 Work
+                </button>
+                <button class="filter-chip" data-category="personal">
+                    👤 Personal
+                </button>
+                <button class="filter-chip" data-category="shopping">
+                    🛒 Shopping
+                </button>
+                <button class="filter-chip" data-category="health">
+                    🏥 Health
+                </button>
+                <button class="filter-chip" data-category="learning">
+                    📚 Learning
+                </button>
+            </div>
+
+            <!-- Status Filter Pills -->
+            <div class="status-filter-bar">
+                <button class="status-filter-pill active" data-status-filter="all">
+                    <i class="fas fa-list"></i>
+                    All
+                </button>
+                <button class="status-filter-pill" data-status-filter="not-started">
+                    <i class="fas fa-circle"></i>
+                    Not Started
+                </button>
+                <button class="status-filter-pill" data-status-filter="in-progress">
+                    <i class="fas fa-spinner"></i>
+                    In Progress
+                </button>
+                <button class="status-filter-pill" data-status-filter="completed">
+                    <i class="fas fa-check-circle"></i>
+                    Completed
+                </button>
+            </div>
+
+            <div class="tasks-grid" id="tasksContainer">
+                <div class="empty-placeholder">
+                    <div class="placeholder-icon">
+                        <i class="fas fa-inbox"></i>
+                    </div>
+                    <h3>No Tasks Yet</h3>
+                    <p>Start by creating your first task using the panel on the left</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="alertContainer" class="toast-container"></div>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>

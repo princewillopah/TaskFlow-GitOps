@@ -1,0 +1,72 @@
+# global:
+taskflow_secrets:
+  # secrets values
+  secrets:
+    backend:
+      mongoUri: AgCm+ASvVpcJAHetLWbAdZRKpIjPJRsp0bELB7ztr+lMXonDYsZk2/S43WxgYQe/Wmzb6hbmnxOTjRDFnE2MtakvYv1QowNvhRf/4K6amKhykSqGDGQXLdI56bs1hMS2Fb4zTiFxz8r+gAaZhk1VwfDL0DpNQNFmOW0huoXOemMNmPmJYkeYHH70LLfNRv7RdAACMtb5ThOdcHPgd4FRvCH4THGzqn0qL0wwmA++Wqcbhh6993PYjcFwTmvXbY//etcx6p3HX6fTvu1RSCM+7ONiiS2IvDYmajSuvhnWCvIEE0dR0RZ0mYM43DuLDyDvxaVkWABy/0qpH6edKHiKUVoZi5MrFCuirj3J61HDvuSbIKxcx+7cwtecw2hYGT7NZKDeDizHsVkIWAnfEiEbPN+Br84SM5zTf1oeFBAetO+kr4EPMdvA8zienXhRdAUt1O0doDHV7hOsJAI6BNDjMei0Qekw93lN76MzX7VtJIjDzmGkvxMGVsjxEjyUp45+9RPl9gROlyGvRTeObguPEpovGVRhisuMahQOhU1uL7DSmzlNptA6tenPU9EtvqNEQVs9VUO8LIkZ6XE494k1dm11bachsVlTSlM7/2Jk5fSPCKG33wkJCeG1LWOtgUrSZl2pLyK5fIed6uveccRXl0QmX+UHHJ6E37uR5tomoMnFFcN0+OFOYyrWxWga7TBQLekrsJMHrsYaao2aTvjHcQv+YOm+GyI/UTfn9QQIOtuLQd/EPKz8g88cuIf2ufHT/IWhq3Y0O1fiV6JSGVoyEDzTPE/ndstMmk1tCKT7/tvBN2oaHX23yiEfMxzyKT/a5Y+3BHXfb3gWdA017wo=
+
+  # network policy values
+  taskflow_network_policies:
+    backend:
+      port: 3000
+
+    node_exporter:
+      port: 9113
+
+# backend values here
+taskflow_backend:
+  image:
+    repository: princewillopah2/taskflow-app_backend
+    tag: staging_1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 3000
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  securityContext:
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+
+
+
+
+
+# frontend values here
+taskflow_frontend:
+  image:
+    repository: princewillopah2/taskflow-app_frontend
+    tag: staging_1.1.6
+    pullPolicy: IfNotPresent
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  port: 80
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+
