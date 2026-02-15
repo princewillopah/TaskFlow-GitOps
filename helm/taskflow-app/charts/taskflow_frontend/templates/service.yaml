@@ -14,6 +14,9 @@ spec:
       port: {{ .Values.taskflow_frontend.port }}
       targetPort: {{ .Values.taskflow_frontend.port }}
       # nodePort: {{ .Values.taskflow_frontend.nodePort }}
+      {{- if eq .Values.taskflow_frontend.service.type "NodePort" }}
+      nodePort: {{ .Values.taskflow_frontend.nodePort }}
+      {{- end }}
     - name: metrics                  # MUST match ServiceMonitor
       port: 9113
       targetPort: 9113

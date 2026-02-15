@@ -13,6 +13,8 @@ taskflow_frontend:
       maxUnavailable: 0
   port: 80
   nodePort: 30080
+  service:
+    type: ClusterIP # or NodePort, LoadBalancer, etc.
   resources:
     requests:
       cpu: "100m"
