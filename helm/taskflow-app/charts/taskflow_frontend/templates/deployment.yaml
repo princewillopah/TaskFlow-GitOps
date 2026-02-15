@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: "{{ .Values.taskflow_frontend.image.repository }}:{{ .Values.taskflow_frontend.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.taskflow_frontend.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.taskflow_frontend.port }}
